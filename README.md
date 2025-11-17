@@ -223,23 +223,118 @@ cd frontend && npm run test:coverage
 
 ```mermaid
 graph TD
-    A[Client] -->|HTTP/HTTPS| B[Frontend]
-    B -->|REST API| C[Backend API]
-    C -->|Database Operations| D[(MongoDB)]
+    %% Client Layer
+    A[Web Browser] -->|HTTPS| B[Frontend]
+    A -->|PWA Capable| B
 
-    subgraph Frontend
-    A1[React Components] --> A2[State Management]
-    A2 --> A3[API Services]
+    %% Frontend Layer
+    subgraph Frontend ["Frontend (React + Vite + TypeScript)"]
+        B --> B1[Authentication]
+        B --> B2[Enquiry Management]
+        B --> B3[User Management]
+
+        B1 --> B1a[Login/Register]
+        B1 --> B1b[JWT Handling]
+
+        B2 --> B2a[Create Enquiry]
+        B2 --> B2b[View/Edit Enquiry]
+        B2 --> B2c[Filter/Search]
+
+        B3 --> B3a[User Profile]
+        B3 --> B3b[Admin Dashboard]
+
+        B --> B4[State Management]
+        B4 --> B4a[Context API]
+        B4 --> B4b[Local Storage]
+
+        B --> B5[API Client]
+        B5 --> B5a[Axios]
+        B5 --> B5b[Request Interceptors]
     end
 
-    subgraph Backend
-    C1[API Routes] --> C2[Controllers]
-    C2 --> C3[Services]
-    C3 --> C4[Models]
+    %% API Layer
+    B5 -->|REST API| C[Backend API]
+
+    %% Backend Layer
+    subgraph Backend ["Backend (Node.js + Express + TypeScript)"]
+        C --> C1[API Routes]
+        C1 --> C1a[/auth/*]
+        C1 --> C1b[/api/enquiries/*]
+        C1 --> C1c[/api/users/*]
+
+        C1 --> C2[Middleware]
+        C2 --> C2a[JWT Auth]
+        C2 --> C2b[Input Validation]
+        C2 --> C2c[Error Handling]
+
+        C2 --> C3[Controllers]
+        C3 --> C3a[AuthController]
+        C3 --> C3b[EnquiryController]
+        C3 --> C3c[UserController]
+
+        C3 --> C4[Services]
+        C4 --> C4a[AuthService]
+        C4 --> C4b[EnquiryService]
+        C4 --> C4c[UserService]
+
+        C4 --> C5[Models]
+        C5 --> C5a[User]
+        C5 --> C5b[Enquiry]
     end
+
+    %% Database Layer
+    C5 -->|Mongoose ODM| D[(MongoDB Atlas)]
+
+    %% External Services
+    C -->|Logging| E[(Winston Logger)]
+    C -->|API Docs| F[Swagger UI]
+
+    %% Styling
+    classDef frontend fill:#e1f5fe,stroke:#03a9f4,stroke-width:2px;
+    classDef backend fill:#e8f5e9,stroke:#4caf50,stroke-width:2px;
+    classDef database fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px;
+    classDef external fill:#fff3e0,stroke:#ff9800,stroke-width:2px;
+
+    class B,Frontend frontend;
+    class C,Backend backend;
+    class D database;
+    class E,F external;
 ```
 
-_Note: The system follows a layered architecture with clear separation of concerns between presentation (Frontend), business logic (Backend), and data storage (MongoDB)._
+### Architecture Overview
+
+1. **Frontend Layer**
+   - Built with React, Vite, and TypeScript for type safety
+   - Responsive UI with Tailwind CSS
+   - State management using React Context API
+   - Protected routes for authenticated access
+   - Form handling with React Hook Form
+
+2. **Backend Layer**
+   - RESTful API built with Express.js and TypeScript
+   - JWT-based authentication
+   - Role-based access control (RBAC)
+   - Input validation using Zod
+   - Centralized error handling
+   - Request logging with Winston
+
+3. **Data Layer**
+   - MongoDB for flexible document storage
+   - Mongoose ODM for schema validation
+   - Indexes for optimized queries
+   - Data population for related documents
+
+4. **API Documentation**
+   - Interactive Swagger UI at `/api-docs`
+   - Auto-generated from JSDoc comments
+   - Includes request/response schemas
+   - Authentication requirements
+
+5. **Development & Build**
+   - Hot module replacement in development
+   - TypeScript compilation
+   - ESLint and Prettier for code quality
+   - Husky for git hooks
 
 ## 🚀 Deployment
 
