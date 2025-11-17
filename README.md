@@ -222,72 +222,41 @@ cd frontend && npm run test:coverage
 
 ```mermaid
 graph TD
-    %% Client Layer
     A[Web Browser] -->|HTTPS| B[Frontend]
-    A -->|PWA Capable| B
-
-    %% Frontend Layer
-    subgraph Frontend ["Frontend (React + Vite + TypeScript)"]
-        B --> B1[Authentication]
-        B --> B2[Enquiry Management]
-        B --> B3[User Management]
+    subgraph Frontend ["Frontend (React + Vite + TS)"]
+        B --> B1[Auth]
+        B --> B2[Enquiries]
+        B --> B3[Users]
         B1 --> B1a[Login/Register]
-        B1 --> B1b[JWT Handling]
-        B2 --> B2a[Create Enquiry]
-        B2 --> B2b[View/Edit Enquiry]
-        B2 --> B2c[Filter/Search]
-        B3 --> B3a[User Profile]
-        B3 --> B3b[Admin Dashboard]
-        B --> B4[State Management]
-        B4 --> B4a[Context API]
-        B4 --> B4b[Local Storage]
-        B --> B5[API Client]
+        B2 --> B2a[CRUD]
+        B3 --> B3a[Profiles]
+        B --> B4[State]
+        B4 --> B4a[Context]
+        B --> B5[API]
         B5 --> B5a[Axios]
-        B5 --> B5b[Request Interceptors]
     end
-
-    %% API Layer
     B5 -->|REST API| C[Backend API]
-
-    %% Backend Layer
-    subgraph Backend ["Backend (Node.js + Express + TypeScript)"]
-        C --> C1[API Routes]
+    subgraph Backend ["Backend (Node/Express/TS)"]
+        C --> C1[Routes]
         C1 --> C1a[auth/*]
-        C1 --> C1b[api/enquiries/*]
-        C1 --> C1c[api/users/*]
+        C1 --> C1b[api/*]
         C1 --> C2[Middleware]
-        C2 --> C2a[JWT Auth]
-        C2 --> C2b[Input Validation]
-        C2 --> C2c[Error Handling]
+        C2 --> C2a[JWT]
+        C2 --> C2b[Validation]
         C2 --> C3[Controllers]
-        C3 --> C3a[AuthController]
-        C3 --> C3b[EnquiryController]
-        C3 --> C3c[UserController]
         C3 --> C4[Services]
-        C4 --> C4a[AuthService]
-        C4 --> C4b[EnquiryService]
-        C4 --> C4c[UserService]
         C4 --> C5[Models]
         C5 --> C5a[User]
         C5 --> C5b[Enquiry]
     end
-
-    %% Database Layer
-    C5 -->|Mongoose ODM| D[(MongoDB Atlas)]
-
-    %% External Services
-    C -->|Logging| E[(Winston Logger)]
-
-    %% Styling
-    classDef frontend fill:#e1f5fe,stroke:#03a9f4,stroke-width:2px;
-    classDef backend fill:#e8f5e9,stroke:#4caf50,stroke-width:2px;
-    classDef database fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px;
-    classDef external fill:#fff3e0,stroke:#ff9800,stroke-width:2px;
-
+    C5 -->|MongoDB| D[(Database)]
+    C -->|Logging| E[(Logger)]
+    classDef frontend fill:#e1f5fe,stroke:#03a9f4;
+    classDef backend fill:#e8f5e9,stroke:#4caf50;
+    classDef database fill:#f3e5f5,stroke:#9c27b0;
     class B,Frontend frontend;
     class C,Backend backend;
-    class D database;
-    class E external;
+    class D,E database;
 ```
 
 ### Architecture Overview
