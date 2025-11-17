@@ -36,4 +36,4 @@ try {
   console.error('❌ SWAGGER GENERATION FAILED:', err);
   throw err;
 }
-export default swaggerJsdoc(options);
+export default swaggerSpec;
