@@ -21,7 +21,7 @@ export const createApp = (): Application => {
   app.use(helmet());
   app.use(
     cors({
-      origin: ['http://localhost:5173', 'https://your-frontend-domain.vercel.app'],
+      origin: ['http://localhost:5173', 'https://enquiry-management-mern-frontend.vercel.app/'],
       credentials: true,
     })
   );
