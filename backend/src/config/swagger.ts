@@ -1,11 +1,10 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 import path from 'path';
 
-const isProd = process.env.NODE_ENV === 'production';
-
-const apiPaths = isProd
-  ? [path.join(__dirname, '../routes/*.js'), path.join(__dirname, '../controllers/*.js')]
-  : [path.join(__dirname, '../routes/*.ts'), path.join(__dirname, '../controllers/*.ts')];
+const apiPaths = [
+  path.join(__dirname, '../routes/*.{ts,js}'),
+  path.join(__dirname, '../controllers/*.{ts,js}'),
+];
 
 const options = {
   definition: {
@@ -15,7 +14,9 @@ const options = {
       version: '1.0.0',
       description: 'API documentation for Enquiry Management System',
     },
-    servers: [{ url: '/api', description: 'Current Server' }],
+    servers: [
+      { url: '/', description: 'Current Server' }, // leave '/' so it works on Render URL
+    ],
   },
   apis: apiPaths,
 };
@@ -36,4 +37,5 @@ try {
   console.error('❌ SWAGGER GENERATION FAILED:', err);
   throw err;
 }
+
 export default swaggerSpec;
