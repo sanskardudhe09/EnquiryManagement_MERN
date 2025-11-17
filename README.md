@@ -20,8 +20,7 @@ A full-stack application built with React + Vite (Frontend) and Node.js + Expres
   - Assign enquiries to staff
 
 - **API Documentation**
-  - Interactive API documentation with Swagger UI
-  - Available at `/api-docs` in development
+  - Available at Postman Collection for API Understanding
 
 ## 🛠 Tech Stack
 
@@ -342,8 +341,7 @@ graph TD
 
 The API documentation is available at:
 
-- **Development:** `http://localhost:5000/api-docs`
-- **Production:** `https://enquirymanagement-backend.onrender.com/api-docs`
+- **Postman Collection Link:** `https://www.postman.com/sanskar9/workspace/sanskar-s-public-workspace/collection/21942128-e94729e6-088e-466d-a45a-a832cedd0215?action=share&creator=21942128`
 
 ## 🚀 Deployment
 
