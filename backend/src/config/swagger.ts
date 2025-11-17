@@ -20,4 +20,20 @@ const options = {
   apis: apiPaths,
 };
 
+let swaggerSpec: any;
+
+try {
+  swaggerSpec = swaggerJsdoc(options);
+
+  console.log('🔥 Swagger generated successfully!');
+  console.log('📌 Total paths found:', Object.keys(swaggerSpec.paths || {}).length);
+  console.log('📌 Scanning files:', apiPaths);
+
+  if (!swaggerSpec.paths || Object.keys(swaggerSpec.paths).length === 0) {
+    console.warn('⚠ No Swagger paths detected! Check your JSDoc comments.');
+  }
+} catch (err) {
+  console.error('❌ SWAGGER GENERATION FAILED:', err);
+  throw err;
+}
 export default swaggerJsdoc(options);
