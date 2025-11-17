@@ -1,6 +1,10 @@
 // backend/src/config/swagger.ts
 import swaggerJsdoc from 'swagger-jsdoc';
-import { version } from '../../../package.json';
+import path from 'path';
+import fs from 'fs';
+
+const packageJsonPath = path.resolve(__dirname, '../../package.json');
+const { version } = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
 
 const options = {
   definition: {
@@ -68,7 +72,12 @@ const options = {
       },
     },
   },
-  apis: ['./src/routes/*.ts', './src/controllers/*.ts'],
+  apis: [
+    './src/routes/*.ts',
+    './src/controllers/*.ts',
+    './dist/routes/*.js',
+    './dist/controllers/*.js',
+  ],
 };
 
 const swaggerSpec = swaggerJsdoc(options);

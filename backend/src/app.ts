@@ -41,12 +41,6 @@ export const createApp = (): Application => {
     res.status(200).json({ status: 'ok' });
   });
 
-  app.use((req: Request, res: Response) => {
-    res.status(404).json({ message: 'Not Found' });
-  });
-
-  app.use(errorHandler);
-
   app.use(
     '/api-docs',
     swaggerUi.serve,
@@ -62,6 +56,12 @@ export const createApp = (): Application => {
     res.setHeader('Content-Type', 'application/json');
     res.send(swaggerSpec);
   });
+
+  app.use((req: Request, res: Response) => {
+    res.status(404).json({ message: 'Not Found' });
+  });
+
+  app.use(errorHandler);
 
   return app;
 };
