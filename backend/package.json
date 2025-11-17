@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "nodemon --exec ts-node src/index.ts",
-    "clean": "rimraf dist",
+    "clean": "if [ -d dist ]; then rm -rf dist; fi",
     "build": "npm run clean && tsc -p tsconfig.build.json --skipLibCheck",
     "start": "node dist/index.js",
     "prestart": "npm run build",
