@@ -1,79 +1,23 @@
-// backend/src/config/swagger.ts
 import swaggerJsdoc from 'swagger-jsdoc';
 import path from 'path';
-import fs from 'fs';
 
-const packageJsonPath = path.resolve(__dirname, '../../package.json');
-const { version } = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+const isProd = process.env.NODE_ENV === 'production';
+
+const apiPaths = isProd
+  ? [path.join(__dirname, '../routes/*.js'), path.join(__dirname, '../controllers/*.js')]
+  : [path.join(__dirname, '../routes/*.ts'), path.join(__dirname, '../controllers/*.ts')];
 
 const options = {
   definition: {
     openapi: '3.0.0',
     info: {
       title: 'Enquiry Management API',
-      version,
+      version: '1.0.0',
       description: 'API documentation for Enquiry Management System',
     },
-    servers: [
-      {
-        url: 'https://enquirymanagement-backend.onrender.com/api',
-        description: 'Production server',
-      },
-      {
-        url: 'http://localhost:5000/api',
-        description: 'Development server',
-      },
-    ],
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
-        },
-      },
-      schemas: {
-        User: {
-          type: 'object',
-          properties: {
-            _id: { type: 'string' },
-            name: { type: 'string' },
-            email: { type: 'string', format: 'email' },
-            role: { type: 'string', enum: ['user', 'admin'] },
-            createdAt: { type: 'string', format: 'date-time' },
-            updatedAt: { type: 'string', format: 'date-time' },
-          },
-        },
-        Enquiry: {
-          type: 'object',
-          properties: {
-            _id: { type: 'string' },
-            title: { type: 'string' },
-            description: { type: 'string' },
-            status: {
-              type: 'string',
-              enum: ['open', 'in_progress', 'resolved', 'closed'],
-              default: 'open',
-            },
-            createdBy: { $ref: '#/components/schemas/User' },
-            assignedTo: { $ref: '#/components/schemas/User' },
-            createdAt: { type: 'string', format: 'date-time' },
-            updatedAt: { type: 'string', format: 'date-time' },
-          },
-        },
-        Error: {
-          type: 'object',
-          properties: {
-            status: { type: 'string' },
-            message: { type: 'string' },
-            errors: { type: 'array', items: { type: 'string' } },
-          },
-        },
-      },
-    },
+    servers: [{ url: '/api', description: 'Current Server' }],
   },
-  apis: [path.join(__dirname, '../routes/*.js'), path.join(__dirname, '../controllers/*.js')],
+  apis: apiPaths,
 };
 
-const swaggerSpec = swaggerJsdoc(options);
-export default swaggerSpec;
+export default swaggerJsdoc(options);
