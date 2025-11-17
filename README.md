@@ -121,9 +121,65 @@ NODE_ENV=development
 VITE_API_URL=http://localhost:5000/api
 ```
 
+## 👨‍💻 Developer Guide
+
+### Running the Application
+
+#### Development Mode
+
+1. **Start Backend**
+
+   ```bash
+   cd backend
+   npm install
+   npm run dev
+   ```
+
+2. **Start Frontend** (in a new terminal)
+
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+
+3. Access the application at `http://localhost:5173`
+
+#### Production Build
+
+1. **Build Frontend**
+
+   ```bash
+   cd frontend
+   npm run build
+   ```
+
+2. **Start Backend in Production**
+   ```bash
+   cd backend
+   npm run build
+   npm start
+   ```
+
 ## 🧪 Testing
 
 ### Backend Tests
+
+#### Unit Tests
+
+```bash
+cd backend
+npm run test:unit
+```
+
+#### Integration Tests
+
+```bash
+cd backend
+npm run test:integration
+```
+
+#### All Tests (Unit + Integration)
 
 ```bash
 cd backend
@@ -132,10 +188,60 @@ npm test
 
 ### Frontend Tests
 
+#### Unit Tests
+
+```bash
+cd frontend
+npm run test:unit
+```
+
+#### Component Tests
+
+```bash
+cd frontend
+npm run test:component
+```
+
+#### All Tests
+
 ```bash
 cd frontend
 npm test
 ```
+
+#### Test Coverage
+
+```bash
+# For backend
+cd backend && npm run test:coverage
+
+# For frontend
+cd frontend && npm run test:coverage
+```
+
+## 🏗️ System Architecture
+
+```mermaid
+graph TD
+    A[Client] -->|HTTP/HTTPS| B[Frontend]
+    B -->|REST API| C[Backend API]
+    C -->|Database Operations| D[(MongoDB)]
+
+    subgraph Frontend
+    A1[React Components] --> A2[State Management]
+    A2 --> A3[API Services]
+    end
+
+    subgraph Backend
+    C1[API Routes] --> C2[Controllers]
+    C2 --> C3[Services]
+    C3 --> C4[Models]
+    end
+```
+
+_Note: The system follows a layered architecture with clear separation of concerns between presentation (Frontend), business logic (Backend), and data storage (MongoDB)._
+
+## 🚀 Deployment
 
 ## 📚 API Documentation
 
