@@ -258,8 +258,7 @@ graph TD
    - Data population for related documents
 
 4. **API Documentation**
-   - Interactive Swagger UI at `/api-docs`
-   - Auto-generated from JSDoc comments
+   - Accessible through Interactive Postman Collection UI`
    - Includes request/response schemas
    - Authentication requirements
 
