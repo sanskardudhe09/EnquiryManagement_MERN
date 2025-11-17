@@ -26,13 +26,122 @@ const updateEnquirySchema = z.object({
     .transform(val => (val === '' ? null : val)),
 });
 
+/**
+ * @swagger
+ * tags:
+ *   name: Enquiries
+ *   description: Enquiry management endpoints
+ */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Enquiry:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         customerName:
+ *           type: string
+ *         email:
+ *           type: string
+ *           format: email
+ *         phone:
+ *           type: string
+ *         message:
+ *           type: string
+ *         status:
+ *           type: string
+ *           enum: [new, in_progress, closed]
+ *           default: new
+ *         assignedTo:
+ *           $ref: '#/components/schemas/User'
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *     EnquiryCreate:
+ *       type: object
+ *       required:
+ *         - customerName
+ *         - email
+ *         - phone
+ *         - message
+ *       properties:
+ *         customerName:
+ *           type: string
+ *           minLength: 1
+ *         email:
+ *           type: string
+ *           format: email
+ *         phone:
+ *           type: string
+ *           minLength: 1
+ *         message:
+ *           type: string
+ *           minLength: 1
+ *         assignedTo:
+ *           type: string
+ *           nullable: true
+ *     EnquiryUpdate:
+ *       type: object
+ *       properties:
+ *         customerName:
+ *           type: string
+ *           minLength: 1
+ *         email:
+ *           type: string
+ *           format: email
+ *         phone:
+ *           type: string
+ *           minLength: 1
+ *         message:
+ *           type: string
+ *           minLength: 1
+ *         status:
+ *           type: string
+ *           enum: [new, in_progress, closed]
+ *         assignedTo:
+ *           type: string
+ *           nullable: true
+ */
+
+/**
+ * @swagger
+ * /api/enquiries:
+ *   post:
+ *     summary: Create a new enquiry
+ *     tags: [Enquiries]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/EnquiryCreate'
+ *     responses:
+ *       201:
+ *         description: Enquiry created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Enquiry'
+ *       400:
+ *         description: Validation error
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Internal server error
+ */
 export const createEnquiry = async (req: Request, res: Response) => {
   try {
     const validatedData = createEnquirySchema.parse(req.body);
-
     const enquiry = await Enquiry.create(validatedData);
     await enquiry.populate('assignedTo', 'name email');
-
     res.status(201).json(enquiry);
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -43,6 +152,45 @@ export const createEnquiry = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/enquiries:
+ *   get:
+ *     summary: Get all enquiries
+ *     tags: [Enquiries]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *           enum: [new, in_progress, closed]
+ *         description: Filter by status
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Search in customer name, email, phone, or message
+ *       - in: query
+ *         name: assignedTo
+ *         schema:
+ *           type: string
+ *         description: Filter by assigned user ID
+ *     responses:
+ *       200:
+ *         description: List of enquiries
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Enquiry'
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Internal server error
+ */
 export const getEnquiries = async (req: Request, res: Response) => {
   try {
     const { status, search, assignedTo } = req.query;
@@ -76,10 +224,38 @@ export const getEnquiries = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/enquiries/{id}:
+ *   get:
+ *     summary: Get enquiry by ID
+ *     tags: [Enquiries]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Enquiry ID
+ *     responses:
+ *       200:
+ *         description: Enquiry details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Enquiry'
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Enquiry not found
+ *       500:
+ *         description: Internal server error
+ */
 export const getEnquiryById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-
     const enquiry = await Enquiry.findOne({ _id: id, deletedAt: null }).populate(
       'assignedTo',
       'name email'
@@ -96,6 +272,43 @@ export const getEnquiryById = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/enquiries/{id}:
+ *   put:
+ *     summary: Update an enquiry
+ *     tags: [Enquiries]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Enquiry ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/EnquiryUpdate'
+ *     responses:
+ *       200:
+ *         description: Enquiry updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Enquiry'
+ *       400:
+ *         description: Validation error
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Enquiry not found
+ *       500:
+ *         description: Internal server error
+ */
 export const updateEnquiry = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -120,10 +333,34 @@ export const updateEnquiry = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/enquiries/{id}:
+ *   delete:
+ *     summary: Delete an enquiry (soft delete)
+ *     tags: [Enquiries]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Enquiry ID
+ *     responses:
+ *       200:
+ *         description: Enquiry deleted successfully
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Enquiry not found
+ *       500:
+ *         description: Internal server error
+ */
 export const deleteEnquiry = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-
     const enquiry = await Enquiry.findOneAndUpdate(
       { _id: id, deletedAt: null },
       { deletedAt: new Date() },

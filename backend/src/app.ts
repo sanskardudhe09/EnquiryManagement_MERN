@@ -8,6 +8,8 @@ import authRoutes from './routes/authRoutes';
 import userRoutes from './routes/userRoutes';
 import enquiryRoutes from './routes/enquiryRoutes';
 import { errorHandler } from './middlewares/errorHandler';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './config/swagger';
 
 config();
 
@@ -44,6 +46,22 @@ export const createApp = (): Application => {
   });
 
   app.use(errorHandler);
+
+  app.use(
+    '/api-docs',
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerSpec, {
+      explorer: true,
+      customSiteTitle: 'Enquiry Management API',
+      customCss: '.swagger-ui .topbar { display: none }',
+    })
+  );
+
+  // Add a simple route to serve the OpenAPI spec as JSON
+  app.get('/api-docs.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+  });
 
   return app;
 };
