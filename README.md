@@ -231,21 +231,16 @@ graph TD
         B --> B1[Authentication]
         B --> B2[Enquiry Management]
         B --> B3[User Management]
-
         B1 --> B1a[Login/Register]
         B1 --> B1b[JWT Handling]
-
         B2 --> B2a[Create Enquiry]
         B2 --> B2b[View/Edit Enquiry]
         B2 --> B2c[Filter/Search]
-
         B3 --> B3a[User Profile]
         B3 --> B3b[Admin Dashboard]
-
         B --> B4[State Management]
         B4 --> B4a[Context API]
         B4 --> B4b[Local Storage]
-
         B --> B5[API Client]
         B5 --> B5a[Axios]
         B5 --> B5b[Request Interceptors]
@@ -257,25 +252,21 @@ graph TD
     %% Backend Layer
     subgraph Backend ["Backend (Node.js + Express + TypeScript)"]
         C --> C1[API Routes]
-        C1 --> C1a[/auth/*]
-        C1 --> C1b[/api/enquiries/*]
-        C1 --> C1c[/api/users/*]
-
+        C1 --> C1a[auth/*]
+        C1 --> C1b[api/enquiries/*]
+        C1 --> C1c[api/users/*]
         C1 --> C2[Middleware]
         C2 --> C2a[JWT Auth]
         C2 --> C2b[Input Validation]
         C2 --> C2c[Error Handling]
-
         C2 --> C3[Controllers]
         C3 --> C3a[AuthController]
         C3 --> C3b[EnquiryController]
         C3 --> C3c[UserController]
-
         C3 --> C4[Services]
         C4 --> C4a[AuthService]
         C4 --> C4b[EnquiryService]
         C4 --> C4c[UserService]
-
         C4 --> C5[Models]
         C5 --> C5a[User]
         C5 --> C5b[Enquiry]
@@ -286,7 +277,6 @@ graph TD
 
     %% External Services
     C -->|Logging| E[(Winston Logger)]
-    C -->|API Docs| F[Swagger UI]
 
     %% Styling
     classDef frontend fill:#e1f5fe,stroke:#03a9f4,stroke-width:2px;
@@ -297,7 +287,7 @@ graph TD
     class B,Frontend frontend;
     class C,Backend backend;
     class D database;
-    class E,F external;
+    class E external;
 ```
 
 ### Architecture Overview
