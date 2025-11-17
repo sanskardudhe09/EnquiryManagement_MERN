@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "types": ["node"],
+    "outDir": "./dist",
+    "rootDir": ".",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["vite.config.ts"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx", "**/*.config.js"]
+}
