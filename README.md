@@ -185,37 +185,12 @@ cd backend
 npm test
 ```
 
-### Frontend Tests
-
-#### Unit Tests
-
-```bash
-cd frontend
-npm run test:unit
-```
-
-#### Component Tests
-
-```bash
-cd frontend
-npm run test:component
-```
-
-#### All Tests
-
-```bash
-cd frontend
-npm test
-```
-
 #### Test Coverage
 
 ```bash
 # For backend
 cd backend && npm run test:coverage
 
-# For frontend
-cd frontend && npm run test:coverage
 ```
 
 ## 🏗️ System Architecture
