@@ -144,22 +144,6 @@ The API documentation is available at:
 - **Development:** `http://localhost:5000/api-docs`
 - **Production:** `https://enquirymanagement-backend.onrender.com/api-docs`
 
-## 🐳 Docker Setup
-
-### Start MongoDB
-
-```bash
-docker run -d -p 27017:27017 --name mongo mongo:latest
-```
-
-### Backend with Docker
-
-```bash
-cd backend
-docker build -t enquiry-backend .
-docker run -p 5000:5000 --env-file .env --link mongo:mongo enquiry-backend
-```
-
 ## 🚀 Deployment
 
 ### Backend (Render/Heroku)
