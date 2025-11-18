@@ -8,6 +8,11 @@ A full-stack application built with React + Vite (Frontend) and Node.js + Expres
   - Register, Login, and Profile management
   - JWT-based authentication
   - Role-based access control (Admin/Staff/User)
+  - **Password Requirements**:
+    - Minimum 6 characters
+    - Any characters allowed (letters, numbers, special characters)
+    - No maximum length (though extremely long passwords may be truncated)
+    - Securely hashed using bcrypt
 
 - **Enquiry Management**
   - Create, Read, Update, Delete enquiries
